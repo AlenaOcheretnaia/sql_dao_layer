@@ -1,5 +1,6 @@
 package netology.aloch;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -8,7 +9,9 @@ import java.util.List;
 
 @RestController
 public class DaoController {
-    DaoRepository daoRepository=new DaoRepository();
+
+    @Autowired
+    DaoRepository daoRepository;
 
     @GetMapping("/")
     public String helloMetod() {
@@ -18,9 +21,12 @@ public class DaoController {
 
     @GetMapping("/products/fetch-product")
     public String getOrders(@RequestParam String name) {
-        daoRepository.getProductName(name);
+        List<String> resultProductName = daoRepository.getProductName(name);
 
-        return("Product name = "+name);
+        return("Product(s) name for name: " + name + " is(are) " + resultProductName.toString());
+    }
+
+    private void getProductName(String name) {
     }
 
 

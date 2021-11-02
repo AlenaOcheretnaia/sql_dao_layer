@@ -12,6 +12,8 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
@@ -22,14 +24,17 @@ public class DaoRepository {
     @Autowired
     private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
-    public void getProductName(String nameCustomer) {
-        SqlRowSet productList = namedParameterJdbcTemplate.queryForRowSet("select * from customers where name = :name",
+    public List<String> getProductName(String nameCustomer) {
+        SqlRowSet productList = namedParameterJdbcTemplate.queryForRowSet(myQuery + ":name",
                 Map.of("name", nameCustomer));
 
-//        while(product_nameList.next())
-//        {
-//            System.out.println(product_nameList.getString(1));
-//        }
+        List<String> productNameList = new ArrayList<String>();
+        while(productList.next())
+        {
+            productNameList.add(productList.getString(1));
+        }
+
+        return productNameList;
 
     }
 
